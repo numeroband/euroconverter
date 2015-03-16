@@ -10,7 +10,7 @@ $(document).ready(function() {
           data : postData,
           success:function(data) 
           {
-            alert(JSON.stringify(data));
+            $("#converted").html(data.date + ': $' + data.value);
           },
           error: function() 
           {

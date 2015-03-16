@@ -114,5 +114,5 @@ function readData(file) {
   });
 }
 
-//downloadData();
-readData(__dirname + '/euro.xml');
+downloadData();
+//readData(__dirname + '/eurofxref-hist.xml');
