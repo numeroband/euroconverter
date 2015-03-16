@@ -1,0 +1,27 @@
+{
+  "name": "module-name",
+  "version": "0.1.0",
+  "description": "Euro converter",
+  "author": "Lorenzo Soto <lorenzo.soto@gmail.com>",
+  "contributors": [{
+    "name": "Lorenzo Soto",
+    "email": "lorenzo.soto@gmail.com"
+  }],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/numeroband/euroconverter.git"
+  },
+  "bugs": {
+  "url": "https://github.com/numeroband/euroconverter/issues"
+  },
+  "keywords": [
+    "node",
+    "euro",
+    "converter"
+  ],
+  "dependencies": {
+    "xml2js": "0.4.6",
+    "request": "*"
+  },
+  "license": "MIT"
+}

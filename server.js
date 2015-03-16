@@ -62,6 +62,9 @@ function staticFile(pathname, res) {
 }
 
 function startServer(data) {
+  var ipaddress = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
+  var port      = process.env.OPENSHIFT_NODEJS_PORT || 1337;
+
   http.createServer(function (req, res) {
     var parsedUrl = url.parse(req.url, true);
     var pathname = parsedUrl.pathname;
@@ -76,8 +79,8 @@ function startServer(data) {
     }
 
     staticFile(pathname, res);
-  }).listen(1337, '127.0.0.1');
-  console.log('Server running at http://127.0.0.1:1337/');
+  }).listen(port, ipaddress);
+  console.log('Server running at http://' + ipaddress + ':' + port + '/');
 }
 
 function parseData(xmlData) {
