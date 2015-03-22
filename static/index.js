@@ -10,7 +10,20 @@ $(document).ready(function() {
           data : postData,
           success:function(data) 
           {
-            $("#converted").html(data.date + ': $' + data.value);
+            if (data.error)
+            {
+              alert(data.error);
+              return;
+            }
+            $("#converted").html('');
+            for (var i = 0; i < data.length; ++i) {
+              if (data[i].error)
+              {
+                $("#converted").append('<p>' + data[i].error + '</p>');
+              } else {
+                $("#converted").append('<p>' + data[i].date + ' $' + data[i].value + '</p>');                
+              }
+            }
           },
           error: function() 
           {

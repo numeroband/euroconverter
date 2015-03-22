@@ -10,7 +10,7 @@ function getValue(data, date, value) {
   var length = data.length;
   for (var i = 0; i < length; ++i) {
     var dateData = data[i];
-    if (date > dateData.time) {
+    if (date > new Date(dateData.time)) {
       return {
         date: dateData.time, 
         value: (value * dateData.rate)
@@ -22,10 +22,16 @@ function getValue(data, date, value) {
 }
 
 function convert(data, queryData, res) {
-  var date = '2014-' + queryData.month + '-' + queryData.day;
-  var converted = getValue(data, new Date(date), Number(queryData.value));
+  var result = [];
+  var lines = queryData.data.split(/\r?\n/);
+  for (var i = 0; i < lines.length; ++i) {
+    var line = lines[i].split(' ');
+    var value = getValue(data, new Date('2014-' + line[0]), new Number(line[1]));
+    result.push(value);
+  }
+
   res.writeHead(200, {'Content-Type': 'application/json'});
-  res.end(JSON.stringify(converted));
+  res.end(JSON.stringify(result));
 }
 
 function notFound(res) {
@@ -92,10 +98,11 @@ function parseData(xmlData) {
     for (var i = 0; i < length; ++i) {
       var dayData = data[i];
       output[i] = {};
-      output[i].time = new Date(dayData.$.time);
+      output[i].time = dayData.$.time;
       output[i].rate = Number(dayData.Cube[0].$.rate);
     }
 
+    fs.writeFileSync(__dirname + '/data.json', JSON.stringify(output));
     startServer(output);
   });
 }
@@ -110,12 +117,23 @@ function downloadData() {
   })
 }
 
-function readData(file) {
+function readData(file, type) {
   console.log('Reading ' + file);
-  fs.readFile(file, function(err, xml) {
-    parseData(xml);
+  fs.readFile(file, function(err, data) {
+    switch (type) {
+      case 'xml':
+        parseData(data);
+        break;
+      case 'json':
+        startServer(JSON.parse(data));
+        break;
+    }
   });
 }
 
-downloadData();
-//readData(__dirname + '/eurofxref-hist.xml');
+if (process.env.OPENSHIFT_NODEJS_IP)
+{
+  downloadData();
+} else {
+  readData(__dirname + '/data.json', 'json');
+}
