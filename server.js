@@ -131,9 +131,9 @@ function readData(file, type) {
   });
 }
 
-if (process.env.OPENSHIFT_NODEJS_IP)
+if (process.argv.length > 2 && process.argv[2] == 'cache')
 {
-  downloadData();
-} else {
   readData(__dirname + '/data.json', 'json');
+} else {
+  downloadData();
 }
