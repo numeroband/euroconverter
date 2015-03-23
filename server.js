@@ -25,8 +25,8 @@ function convert(data, queryData, res) {
   var result = [];
   var lines = queryData.data.split(/\r?\n/);
   for (var i = 0; i < lines.length; ++i) {
-    var line = lines[i].split(' ');
-    var value = getValue(data, new Date('2014-' + line[0]), new Number(line[1]));
+    var line = lines[i].split(/\t/);
+    var value = getValue(data, new Date(line[0]), new Number(line[1]));
     result.push(value);
   }
 

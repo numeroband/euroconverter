@@ -15,15 +15,16 @@ $(document).ready(function() {
               alert(data.error);
               return;
             }
-            $("#converted").html('');
+            var converted = '';
             for (var i = 0; i < data.length; ++i) {
               if (data[i].error)
               {
-                $("#converted").append('<p>' + data[i].error + '</p>');
+                converted += data[i].error + '\n';
               } else {
-                $("#converted").append('<p>' + data[i].date + ' $' + data[i].value + '</p>');                
+                converted += data[i].date + '\t' + data[i].value.toFixed(2) + '\n';
               }
             }
+            $("#converted").val(converted);
           },
           error: function() 
           {
@@ -31,6 +32,5 @@ $(document).ready(function() {
           }
       });
       e.preventDefault(); //STOP default action
-      e.unbind(); //unbind. to stop multiple form submit.
   });
 });
