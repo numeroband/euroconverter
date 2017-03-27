@@ -8,7 +8,7 @@ var path = require('path');
 
 function getValue(data, date, value) {
   var length = data.length;
-  for (var i = 0; i < length; ++i) {
+  for (var i = 0; date && i < length; ++i) {
     var dateData = data[i];
     if (date > new Date(dateData.time)) {
       return {
@@ -21,12 +21,17 @@ function getValue(data, date, value) {
   return {error:'Wrong date'};
 }
 
+function strToDate(strDate) {
+  dateArray = strDate.split(/[-/]/);
+  return (dateArray && dateArray.length == 3) ? new Date(dateArray[2], dateArray[1] - 1, dateArray[0]) : null;
+}
+
 function convert(data, queryData, res) {
   var result = [];
   var lines = queryData.data.split(/\r?\n/);
   for (var i = 0; i < lines.length; ++i) {
     var line = lines[i].split(/\t/);
-    var value = getValue(data, new Date(line[0]), new Number(line[1]));
+    var value = getValue(data, strToDate(line[0]), new Number(line[1]));
     result.push(value);
   }
 
